@@ -5,16 +5,18 @@ OBJECTS = $(SOURCES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	cd libft; make; cp libft.a ../$(NAME); make fclean;
+	cd libft; make; cp libft.a ../$(NAME);
 	ar rc $@ $?
 
 %.o: %.c
 	gcc -c -Wall -Wextra -Werror $?
 
 clean:
+	cd libft; make clean;
 	rm -f $(OBJECTS)
 
 fclean: clean
+	cd libft; make fclean;
 	rm -f $(NAME)
 
 re: fclean all
