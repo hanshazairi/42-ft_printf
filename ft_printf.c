@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:08:22 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/29 02:49:17 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/29 16:16:04 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,67 +15,67 @@
 #include <stdlib.h>
 #include "libft/libft.h"
 
-int	ft_printf(const char *str, ...)
+int	ft_process_int(char fmt, va_list ap)
 {
 	int			count;
-	char		*s;
+	char		*str;
+	long long	num;
+
+	num = va_arg(ap, int);
+	if ((fmt == 'u' || fmt == 'x' || fmt == 'X') && num < 0)
+		num = UINT_MAX + num + 1;
+	if (fmt == 'd' || fmt == 'i' || fmt == 'u')
+		str = ft_itoa_base(num, 10);
+	else if (fmt == 'x' || fmt == 'X')
+		str = ft_itoa_base(num, 16);
+	if (fmt == 'X')
+		str = ft_strupr(str);
+	ft_putstr_fd(str, 1);
+	count = ft_strlen(str);
+	free(str);
+	return (count);
+}
+
+int	ft_printf(const char *s, ...)
+{
+	int			count;
+	char		*str;
 	char		*tmp;
 	va_list		ap;
-	long long	llnum;
 
 	count = 0;
-	va_start(ap, str);
-	while (*str)
+	va_start(ap, s);
+	while (*s)
 	{
-		if (*str == '%' && *str++)
+		if (*s == '%' && *s++)
 		{
-			if (*str == 'c' && ++count)
+			if (*s == 'c' && ++count)
 				ft_putchar_fd(va_arg(ap, int), 1);
-			else if (*str == 's')
+			else if (*s == 's')
 			{
-				s = va_arg(ap, char *);
-				ft_putstr_fd(s, 1);
-				count += ft_strlen(s);
+				str = va_arg(ap, char *);
+				ft_putstr_fd(str, 1);
+				count += ft_strlen(str);
 			}
-			else if (*str == 'p')
+			else if (*s == 'p')
 			{
-				s = ft_itoa_base(va_arg(ap, long long), 16);
-				tmp = s;
-				s = ft_strjoin("0x", s);
+				str = ft_itoa_base(va_arg(ap, long long), 16);
+				tmp = str;
+				str = ft_strjoin("0x", str);
 				free(tmp);
-				ft_putstr_fd(s, 1);
-				count += ft_strlen(s);
-				free(s);
+				ft_putstr_fd(str, 1);
+				count += ft_strlen(str);
+				free(str);
 			}
-			else if (*str == 'd' || *str == 'i')
-			{
-				s = ft_itoa(va_arg(ap, int));
-				ft_putstr_fd(s, 1);
-				count += ft_strlen(s);
-				free(s);
-			}
-			else if (*str == 'u' || *str == 'x')
-			{
-				llnum = va_arg(ap, long);
-				if (llnum < 0)
-					llnum = UINT_MAX + 1 - llnum;
-				if (*str == 'u')
-					s = ft_itoa_base(llnum, 10);
-				else if (*str == 'x')
-					s = ft_itoa_base(llnum, 16);
-				ft_putstr_fd(s, 1);
-				count += ft_strlen(s);
-				free(s);
-			}
-			else if (*str == '%' && ++count)
-				ft_putchar_fd('%', 1);
-			++str;
+			else if (*s == 'd' || *s == 'i' || *s == 'u' || *s == 'x'
+				|| *s == 'X')
+				count += ft_process_int(*s, ap);
+			else if (*s == '%' && ++count)
+				ft_putchar_fd(*s, 1);
+			++s;
 		}
-		else
-		{
-			ft_putchar_fd(*str++, 1);
-			++count;
-		}
+		else if (++count)
+			ft_putchar_fd(*s++, 1);
 	}
 	va_end(ap);
 	return (count);
