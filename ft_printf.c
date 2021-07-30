@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:08:22 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/31 01:11:19 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/31 02:26:54 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,7 @@ static t_format	ft_reset(t_format *fmt)
 	return (*fmt);
 }
 
-static int	ft_istype(char c)
-{
-	const char	*types = "cspdiuxX%";
-
-	while (*types)
-		if (c == *types++)
-			return (1);
-	return (0);
-}
-
-int	ft_printf(const char *s, ...)
+int	ft_printf(const char *str, ...)
 {
 	int			count;
 	t_format	*fmt;
@@ -50,18 +40,16 @@ int	ft_printf(const char *s, ...)
 	if (!fmt)
 		return (-1);
 	ft_init(fmt);
-	va_start(fmt->args, s);
-	while (*s)
+	va_start(fmt->args, str);
+	while (*str)
 	{
-		if (*s == '%' && *s++)
+		if (*str == '%' && *str++)
 		{
-			while (*s && !ft_istype(*s))
-				ft_preprocess(*s++, fmt);
-			ft_process(*s++, fmt);
+			str = ft_process((char *)str, fmt);
 			ft_reset(fmt);
 		}
 		else if (++count)
-			ft_putchar_fd(*s++, 1);
+			ft_putchar_fd(*str++, 1);
 	}
 	va_end(fmt->args);
 	count += fmt->count;

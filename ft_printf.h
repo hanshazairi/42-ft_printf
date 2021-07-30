@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:09:33 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/30 18:09:07 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/31 02:27:12 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ typedef struct s_format
 }	t_format;
 
 int		ft_printf(const char *str, ...);
-void	ft_preprocess(char s, t_format *fmt);
-void	ft_process(char s, t_format *fmt);
+char	*ft_process(char *str, t_format *fmt);
+void	ft_print_char(t_format *fmt);
+void	ft_print_str(t_format *fmt);
+void	ft_print_ptr(t_format *fmt);
+void	ft_print_int(char c, t_format *fmt);
 
 #endif
