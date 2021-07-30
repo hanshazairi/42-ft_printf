@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:08:22 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/30 17:49:23 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/30 17:58:07 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 static t_format	ft_initfmt(t_format *fmt)
 {
+	fmt->count = 0;
 	fmt->minus = 0;
 	fmt->width = 0;
 	return (*fmt);
@@ -49,11 +50,13 @@ int	ft_printf(const char *s, ...)
 		{
 			while (*s && !ft_istype(*s))
 				ft_preprocess(*s++, fmt);
-			count += ft_process(*s++, fmt);
+			ft_process(*s++, fmt);
 		}
 		else if (++count)
 			ft_putchar_fd(*s++, 1);
 	}
 	va_end(fmt->args);
+	count += fmt->count;
+	free(fmt);
 	return (count);
 }

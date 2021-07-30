@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:50:31 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/30 17:03:29 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/30 18:08:56 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 #include "libft/libft.h"
 #include "ft_printf.h"
 
-static int	ft_process_ptr(t_format *ap)
+static void	ft_process_ptr(t_format *fmt)
 {
 	int			count;
 	char		*str;
 	char		*tmp;
 	long long	num;
 
-	num = va_arg(ap->args, long long);
+	num = va_arg(fmt->args, long long);
 	str = ft_itoa_base(num, 16);
 	if (num < 0)
 		num = ULONG_MAX + num + 1;
@@ -33,55 +33,55 @@ static int	ft_process_ptr(t_format *ap)
 	ft_putstr_fd(str, 1);
 	count = ft_strlen(str);
 	free(str);
-	return (count);
+	fmt->count += count;
 }
 
-static int	ft_process_int(char fmt, t_format *ap)
+static void	ft_process_int(char s, t_format *fmt)
 {
 	int			count;
 	char		*str;
 	long long	num;
 
 	count = 0;
-	num = va_arg(ap->args, int);
-	if ((fmt == 'd' || fmt == 'i') && num < 0 && ++count)
+	num = va_arg(fmt->args, int);
+	if ((s == 'd' || s == 'i') && num < 0 && ++count)
 	{
 		num = ULONG_MAX - num + 1;
 		ft_putchar_fd('-', 1);
 	}
-	if ((fmt == 'u' || fmt == 'x' || fmt == 'X') && num < 0)
+	if ((s == 'u' || s == 'x' || s == 'X') && num < 0)
 		num = UINT_MAX + num + 1;
-	if (fmt == 'd' || fmt == 'i' || fmt == 'u')
+	if (s == 'd' || s == 'i' || s == 'u')
 		str = ft_itoa_base(num, 10);
-	else if (fmt == 'x' || fmt == 'X')
+	else if (s == 'x' || s == 'X')
 		str = ft_itoa_base(num, 16);
-	if (fmt == 'X')
+	if (s == 'X')
 		str = ft_strupr(str);
 	ft_putstr_fd(str, 1);
 	count += ft_strlen(str);
 	free(str);
-	return (count);
+	fmt->count += count;
 }
 
-int	ft_process(char fmt, t_format *ap)
+void	ft_process(char s, t_format *fmt)
 {
 	int		count;
 	char	*str;
 
 	count = 0;
-	if (fmt == 'c' && ++count)
-		ft_putchar_fd(va_arg(ap->args, int), 1);
-	else if (fmt == 's')
+	if (s == 'c' && ++count)
+		ft_putchar_fd(va_arg(fmt->args, int), 1);
+	else if (s == 's')
 	{
-		str = va_arg(ap->args, char *);
+		str = va_arg(fmt->args, char *);
 		ft_putstr_fd(str, 1);
 		count += ft_strlen(str);
 	}
-	else if (fmt == 'p')
-		count += ft_process_ptr(ap);
-	else if (fmt == 'd' || fmt == 'i' || fmt == 'u' || fmt == 'x' || fmt == 'X')
-		count += ft_process_int(fmt, ap);
-	else if (fmt == '%' && ++count)
-		ft_putchar_fd(fmt, 1);
-	return (count);
+	else if (s == 'p')
+		ft_process_ptr(fmt);
+	else if (s == 'd' || s == 'i' || s == 'u' || s == 'x' || s == 'X')
+		ft_process_int(s, fmt);
+	else if (s == '%' && ++count)
+		ft_putchar_fd(s, 1);
+	fmt->count += count;
 }
