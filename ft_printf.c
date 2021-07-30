@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:08:22 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/30 16:24:57 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/30 17:49:23 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,19 @@
 #include "libft/libft.h"
 #include "ft_printf.h"
 
-t_format	ft_initfmt(t_format *fmt)
+static t_format	ft_initfmt(t_format *fmt)
 {
 	fmt->minus = 0;
 	fmt->width = 0;
 	return (*fmt);
 }
 
-static int	ft_istype(char c, char *type)
+static int	ft_istype(char c)
 {
-	while (*type)
-		if (c == *type++)
+	const char	*types = "cspdiuxX%";
+
+	while (*types)
+		if (c == *types++)
 			return (1);
 	return (0);
 }
@@ -33,11 +35,9 @@ static int	ft_istype(char c, char *type)
 int	ft_printf(const char *s, ...)
 {
 	int			count;
-	char		*types;
 	t_format	*fmt;
 
 	count = 0;
-	types = "cspdiuxX%";
 	fmt = malloc(sizeof(t_format));
 	if (!fmt)
 		return (-1);
@@ -47,9 +47,9 @@ int	ft_printf(const char *s, ...)
 	{
 		if (*s == '%' && *s++)
 		{
-			while (*s && !ft_istype(*s, types))
+			while (*s && !ft_istype(*s))
 				ft_preprocess(*s++, fmt);
-			count += ft_process(*s++, fmt->args);
+			count += ft_process(*s++, fmt);
 		}
 		else if (++count)
 			ft_putchar_fd(*s++, 1);

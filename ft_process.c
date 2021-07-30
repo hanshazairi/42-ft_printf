@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:50:31 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/30 16:23:09 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/30 17:03:29 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include "libft/libft.h"
+#include "ft_printf.h"
 
-static int	ft_process_ptr(va_list ap)
+static int	ft_process_ptr(t_format *ap)
 {
 	int			count;
 	char		*str;
 	char		*tmp;
 	long long	num;
 
-	num = va_arg(ap, long long);
+	num = va_arg(ap->args, long long);
 	str = ft_itoa_base(num, 16);
 	if (num < 0)
 		num = ULONG_MAX + num + 1;
@@ -35,14 +36,14 @@ static int	ft_process_ptr(va_list ap)
 	return (count);
 }
 
-static int	ft_process_int(char fmt, va_list ap)
+static int	ft_process_int(char fmt, t_format *ap)
 {
 	int			count;
 	char		*str;
 	long long	num;
 
 	count = 0;
-	num = va_arg(ap, int);
+	num = va_arg(ap->args, int);
 	if ((fmt == 'd' || fmt == 'i') && num < 0 && ++count)
 	{
 		num = ULONG_MAX - num + 1;
@@ -62,17 +63,17 @@ static int	ft_process_int(char fmt, va_list ap)
 	return (count);
 }
 
-int	ft_process(char fmt, va_list ap)
+int	ft_process(char fmt, t_format *ap)
 {
 	int		count;
 	char	*str;
 
 	count = 0;
 	if (fmt == 'c' && ++count)
-		ft_putchar_fd(va_arg(ap, int), 1);
+		ft_putchar_fd(va_arg(ap->args, int), 1);
 	else if (fmt == 's')
 	{
-		str = va_arg(ap, char *);
+		str = va_arg(ap->args, char *);
 		ft_putstr_fd(str, 1);
 		count += ft_strlen(str);
 	}
