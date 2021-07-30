@@ -1,25 +1,29 @@
 NAME = libftprintf.a
 SOURCES = $(filter-out main.c, $(wildcard *.c))
 OBJECTS = $(SOURCES:.c=.o)
+LIBFT_NAME = libft.a
+LIBFT_PATH = libft/
+LIBFT_OBJECTS = $(LIBFT_PATH)*.o
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-	cd libft; make; cp libft.a ../$(NAME);
-	ar rc $@ $?
+$(NAME): $(OBJECTS) libftmake
+	ar rc $(NAME) $(OBJECTS) $(LIBFT_OBJECTS)
 
 bonus: $(NAME)
+
+libftmake:
+	make -C $(LIBFT_PATH)
 
 %.o: %.c
 	gcc -c -Wall -Wextra -Werror $?
 
 clean:
-	cd libft; make clean;
+	make -C $(LIBFT_PATH) clean
 	rm -f $(OBJECTS)
 
 fclean: clean
-	cd libft; make fclean;
-	rm -f $(NAME)
+	rm -f $(NAME) $(LIBFT_PATH)$(LIBFT_NAME)
 
 re: fclean all
 
