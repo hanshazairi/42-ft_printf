@@ -6,19 +6,12 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:57:57 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/30 01:01:48 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/30 16:24:17 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
 #include "libft/libft.h"
-
-typedef struct s_format
-{
-	va_list	args;
-	int		minus;
-	int		width;
-}	t_format;
+#include "ft_printf.h"
 
 void	ft_preprocess(char s, t_format *fmt)
 {
