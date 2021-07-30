@@ -8,6 +8,8 @@ $(NAME): $(OBJECTS)
 	cd libft; make; cp libft.a ../$(NAME);
 	ar rc $@ $?
 
+bonus: $(NAME)
+
 %.o: %.c
 	gcc -c -Wall -Wextra -Werror $?
 

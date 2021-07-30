@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:50:31 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/30 18:08:56 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/31 01:35:48 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,56 @@
 #include <stdlib.h>
 #include "libft/libft.h"
 #include "ft_printf.h"
+
+static void ft_process_char(t_format *fmt)
+{
+	int	len;
+	int	offset;
+
+	len = 1;
+	offset = 0;
+	if (fmt->width)
+		offset = fmt->width - 1;
+	if (fmt->minus)
+	{
+		ft_putchar_fd(va_arg(fmt->args, int), 1);
+		while (offset-- > 0 && ++len)
+			ft_putchar_fd(' ', 1);
+	}
+	else
+	{
+		while (offset-- > 0 && ++len)
+			ft_putchar_fd(' ', 1);
+		ft_putchar_fd(va_arg(fmt->args, int), 1);
+	}
+	fmt->count += len;
+}
+
+static void ft_process_str(t_format *fmt)
+{
+	int		len;
+	int		offset;
+	char	*str;
+
+	offset = 0;
+	str = va_arg(fmt->args, char *);
+	len = ft_strlen(str);
+	if (fmt->width)
+		offset = fmt->width - len;
+	if (fmt->minus)
+	{
+		ft_putstr_fd(str, 1);
+		while (offset-- > 0 && ++len)
+			ft_putchar_fd(' ', 1);
+	}
+	else
+	{
+		while (offset-- > 0 && ++ len)
+			ft_putchar_fd(' ', 1);
+		ft_putstr_fd(str, 1);
+	}
+	fmt->count += len;
+}
 
 static void	ft_process_ptr(t_format *fmt)
 {
@@ -66,17 +116,12 @@ static void	ft_process_int(char s, t_format *fmt)
 void	ft_process(char s, t_format *fmt)
 {
 	int		count;
-	char	*str;
 
 	count = 0;
-	if (s == 'c' && ++count)
-		ft_putchar_fd(va_arg(fmt->args, int), 1);
+	if (s == 'c')
+		ft_process_char(fmt);
 	else if (s == 's')
-	{
-		str = va_arg(fmt->args, char *);
-		ft_putstr_fd(str, 1);
-		count += ft_strlen(str);
-	}
+		ft_process_str(fmt);
 	else if (s == 'p')
 		ft_process_ptr(fmt);
 	else if (s == 'd' || s == 'i' || s == 'u' || s == 'x' || s == 'X')
