@@ -67,22 +67,28 @@ void	ft_print_str(t_format *fmt)
 
 void	ft_print_ptr(t_format *fmt)
 {
-	int			count;
-	char		*str;
-	char		*tmp;
-	long long	num;
+	int				offset;
+	const long long	num = va_arg(fmt->args, long long) + ULONG_MAX + 1;
+	const int		len = ft_numlen(num, 16) + 2;
 
-	num = va_arg(fmt->args, long long);
-	str = ft_itoa_base(num, 16);
-	if (num < 0)
-		num = ULONG_MAX + num + 1;
-	tmp = str;
-	str = ft_strjoin("0x", str);
-	free(tmp);
-	ft_putstr_fd(str, 1);
-	count = ft_strlen(str);
-	free(str);
-	fmt->count += count;
+	offset = 0;
+	if (fmt->width && fmt->width > len)
+		offset = fmt->width - len;
+	fmt->count += len + offset;
+	if (fmt->minus)
+	{
+		ft_putstr_fd("0x", 1);
+		ft_putnbr_base_fd(num, 16, 1);
+		while (offset--)
+			ft_putchar_fd(' ', 1);
+	}
+	else
+	{
+		while (offset--)
+			ft_putchar_fd(' ', 1);
+		ft_putstr_fd("0x", 1);
+		ft_putnbr_base_fd(num, 16, 1);
+	}
 }
 
 void	ft_print_int(char c, t_format *fmt)
