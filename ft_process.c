@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:57:57 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/31 02:29:44 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/31 19:30:54 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,17 @@ static int	ft_istype(char c)
 
 static void	ft_subprocess(char c, t_format *fmt)
 {
-	if (c == '-')
+	if (ft_isdigit(c))
+	{
+		if (fmt->dot)
+			fmt->precision = fmt->precision * 10 + c - '0';
+		else
+			fmt->width = fmt->width * 10 + c - '0';
+	}
+	else if (c == '-')
 		fmt->minus = 1;
-	else if (ft_isdigit(c))
-		fmt->width = fmt->width * 10 + c - '0';
+	else if (c == '.')
+		fmt->dot = 1;
 }
 
 char	*ft_process(char *str, t_format *fmt)

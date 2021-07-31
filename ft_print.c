@@ -18,52 +18,51 @@
 
 void	ft_print_char(t_format *fmt)
 {
-	int	len;
-	int	offset;
+	int			offset;
+	const char	c = va_arg(fmt->args, int);
 
-	len = 1;
 	offset = 0;
-	if (fmt->width)
+	if (fmt->width && fmt->width > fmt->precision)
 		offset = fmt->width - 1;
+	fmt->count += offset + 1;
 	if (fmt->minus)
 	{
-		ft_putchar_fd(va_arg(fmt->args, int), 1);
-		while (offset-- > 0 && ++len)
+		ft_putchar_fd(c, 1);
+		while (offset--)
 			ft_putchar_fd(' ', 1);
 	}
 	else
 	{
-		while (offset-- > 0 && ++len)
+		while (offset--)
 			ft_putchar_fd(' ', 1);
-		ft_putchar_fd(va_arg(fmt->args, int), 1);
+		ft_putchar_fd(c, 1);
 	}
-	fmt->count += len;
 }
 
 void	ft_print_str(t_format *fmt)
 {
-	int		len;
-	int		offset;
-	char	*str;
+	int			offset;
+	const char	*str = va_arg(fmt->args, char *);
+	const int	len = ft_strlen(str);
 
 	offset = 0;
-	str = va_arg(fmt->args, char *);
-	len = ft_strlen(str);
-	if (fmt->width)
-		offset = fmt->width - len;
+	if (!fmt->dot || fmt->precision > len)
+		fmt->precision = len;
+	if (fmt->width && fmt->width > fmt->precision)
+		offset = fmt->width - fmt->precision;
+	fmt->count += fmt->precision + offset;
 	if (fmt->minus)
 	{
-		ft_putstr_fd(str, 1);
-		while (offset-- > 0 && ++len)
+		ft_putstr_fd((char *)str, 1);
+		while (offset--)
 			ft_putchar_fd(' ', 1);
 	}
 	else
 	{
-		while (offset-- > 0 && ++ len)
+		while (offset--)
 			ft_putchar_fd(' ', 1);
-		ft_putstr_fd(str, 1);
+		ft_putstrn_fd((char *)str, fmt->precision, 1);
 	}
-	fmt->count += len;
 }
 
 void	ft_print_ptr(t_format *fmt)

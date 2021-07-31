@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:09:33 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/31 02:27:12 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/31 19:29:31 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ typedef struct s_format
 	int		count;
 	int		minus;
 	int		width;
+	int		dot;
+	int		precision;
 }	t_format;
 
 int		ft_printf(const char *str, ...);

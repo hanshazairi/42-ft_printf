@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:08:22 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/07/31 02:26:54 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/07/31 19:29:40 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static t_format	ft_init(t_format *fmt)
 	fmt->count = 0;
 	fmt->minus = 0;
 	fmt->width = 0;
+	fmt->dot = 0;
+	fmt->precision = 0;
 	return (*fmt);
 }
 
@@ -27,6 +29,8 @@ static t_format	ft_reset(t_format *fmt)
 {
 	fmt->minus = 0;
 	fmt->width = 0;
+	fmt->dot = 0;
+	fmt->precision = 0;
 	return (*fmt);
 }
 
