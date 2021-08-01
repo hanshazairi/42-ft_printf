@@ -16,6 +16,8 @@
 #include "libft/libft.h"
 #include "ft_printf.h"
 
+void	ft_putfnbr_fd(int n, t_format *fmt, int fd);
+
 void	ft_print_char(t_format *fmt)
 {
 	int			offset;
@@ -69,7 +71,7 @@ void	ft_print_ptr(t_format *fmt)
 {
 	int				offset;
 	const long long	num = va_arg(fmt->args, long long) + ULONG_MAX + 1;
-	const int		len = ft_numlen(num, 16) + 2;
+	const int		len = ft_unumlen(num, 16) + 2;
 
 	offset = 0;
 	if (fmt->width && fmt->width > len)
@@ -91,7 +93,36 @@ void	ft_print_ptr(t_format *fmt)
 	}
 }
 
-void	ft_print_int(char c, t_format *fmt)
+void	ft_print_int(t_format *fmt)
+{
+	const int	num = va_arg(fmt->args, int);
+	const int	len = ft_numlen(num, 10, false);
+	const int	alen = ft_numlen(num, 10, true);
+
+	if (fmt->precision > alen)
+		fmt->lead = fmt->precision - alen;
+	if (fmt->zero && num < 0 && fmt->lead)
+		--fmt->lead;
+	if (fmt->width > fmt->lead + len)
+		fmt->offset = fmt->width - fmt->lead - len;
+	if ((fmt->space || fmt->plus) && num >= 0 && ++fmt->count && fmt->offset)
+		--fmt->offset;
+	fmt->count += fmt->offset + fmt->lead + len;
+	if (fmt->minus)
+	{
+		ft_putfnbr_fd(num, fmt, 1);
+		while (fmt->offset--)
+			ft_putchar_fd(' ', 1);
+	}
+	else
+	{
+		while (fmt->offset--)
+			ft_putchar_fd(' ', 1);
+		ft_putfnbr_fd(num, fmt, 1);
+	}
+}
+
+void	ft_print_uint(char c, t_format *fmt)
 {
 	int			count;
 	char		*str;
