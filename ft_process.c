@@ -6,12 +6,18 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:57:57 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/02 01:47:43 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/02 02:53:46 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "ft_printf.h"
+
+void	ft_printf_char(t_format *fmt);
+void	ft_printf_str(t_format *fmt);
+void	ft_printf_ptr(t_format *fmt);
+void	ft_printf_int(t_format *fmt);
+void	ft_printf_uint(char c, t_format *fmt);
 
 static int	ft_istype(char c)
 {
@@ -32,40 +38,40 @@ static void	ft_subprocess(char c, t_format *fmt)
 		else
 		{
 			if (!fmt->width && c == '0')
-				fmt->zero = 1;
+				fmt->zero = true;
 			else
 				fmt->width = fmt->width * 10 + c - '0';
 		}
 	}
 	else if (c == '-')
-		fmt->minus = 1;
-	else if (c == '.')
-		fmt->dot = 1;
+		fmt->minus = true;
 	else if (c == ' ')
-		fmt->space = 1;
+		fmt->space = true;
 	else if (c == '+')
-		fmt->plus = 1;
+		fmt->plus = true;
+	else if (c == '.')
+		fmt->dot = true;
 }
 
 char	*ft_process(char *str, t_format *fmt)
 {
-	int	count;
+	int	len;
 
-	count = 0;
+	len = 0;
 	while (*str && !ft_istype(*str))
 		ft_subprocess(*str++, fmt);
 	if (*str == 'c')
-		ft_print_char(fmt);
+		ft_printf_char(fmt);
 	else if (*str == 's')
-		ft_print_str(fmt);
+		ft_printf_str(fmt);
 	else if (*str == 'p')
-		ft_print_ptr(fmt);
+		ft_printf_ptr(fmt);
 	else if (*str == 'd' || *str == 'i')
-		ft_print_int(fmt);
+		ft_printf_int(fmt);
 	else if (*str == 'u' || *str == 'x' || *str == 'X')
-		ft_print_uint(*str, fmt);
-	else if (*str == '%' && ++count)
+		ft_printf_uint(*str, fmt);
+	else if (*str == '%' && ++len)
 		ft_putchar_fd(*str, 1);
-	fmt->count += count;
+	fmt->len += len;
 	return (++str);
 }
