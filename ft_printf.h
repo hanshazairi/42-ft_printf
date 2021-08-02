@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:09:33 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/02 03:25:23 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/03 01:34:25 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,22 @@
 
 # include <stdarg.h>
 
-typedef struct s_format
+typedef struct s_fmt
 {
 	int		len;
 	int		offset;
 	int		pad;
 	int		width;
 	int		precision;
+	bool	hashtag;
 	bool	zero;
 	bool	minus;
 	bool	space;
 	bool	plus;
 	bool	dot;
+	bool	upper;
 	va_list	args;
-}	t_format;
+}	t_fmt;
 
 int	ft_printf(const char *str, ...);
 

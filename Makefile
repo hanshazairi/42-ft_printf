@@ -1,5 +1,5 @@
 NAME = libftprintf.a
-SOURCES = $(filter-out main.c, $(wildcard *.c))
+SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)
 LIBFT_NAME = libft.a
 LIBFT_PATH = libft/
