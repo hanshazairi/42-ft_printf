@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:50:31 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/03 02:38:48 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/03 20:54:26 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ void	ft_printf_str(t_fmt *fmt)
 	if (fmt->width > fmt->precision)
 		fmt->offset = fmt->width - fmt->precision;
 	fmt->len += fmt->offset + fmt->precision;
-	if (fmt->minus)
+	if (!str)
+		ft_putstr_fd("(null)", 1);
+	else if (fmt->minus)
 	{
 		ft_putstr_fd((char *)str, 1);
 		while (fmt->offset--)

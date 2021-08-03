@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:09:33 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/03 01:34:25 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/03 20:56:06 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
+# include <stdbool.h>
 
 typedef struct s_fmt
 {
