@@ -6,10 +6,11 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:57:57 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/03 01:34:06 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/05 01:44:31 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdarg.h>
 #include "libft/libft.h"
 #include "ft_printf.h"
 
@@ -62,7 +63,11 @@ char	*ft_process(char *str, t_fmt *fmt)
 	if (*str == 'c')
 		ft_printf_char(fmt);
 	else if (*str == 's')
+	{
+		if (!va_arg(fmt->argscopy, char *))
+			fmt->len += 6;
 		ft_printf_str(fmt);
+	}
 	else if (*str == 'p')
 		ft_printf_ptr(fmt);
 	else if (*str == 'd' || *str == 'i')

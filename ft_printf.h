@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:09:33 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/03 20:56:06 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/05 01:44:53 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_fmt
 	bool	dot;
 	bool	upper;
 	va_list	args;
+	va_list	argscopy;
 }	t_fmt;
 
 int	ft_printf(const char *str, ...);
