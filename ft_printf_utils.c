@@ -6,13 +6,13 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:50:31 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/03 20:54:26 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/05 14:30:29 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include <stdarg.h>
-#include <stdlib.h>
+#include <unistd.h>
 #include "libft/libft.h"
 #include "ft_printf.h"
 
@@ -44,18 +44,18 @@ void	ft_printf_char(t_fmt *fmt)
 
 void	ft_printf_str(t_fmt *fmt)
 {
-	char		*tmp;
+	int			len;
 	const char	*str = va_arg(fmt->args, char *);
-	const int	len = ft_strlen(str);
 
+	if (!str)
+		str = "(null)";
+	len = ft_strlen(str);
 	if (!fmt->dot || fmt->precision > len)
 		fmt->precision = len;
 	if (fmt->width > fmt->precision)
 		fmt->offset = fmt->width - fmt->precision;
 	fmt->len += fmt->offset + fmt->precision;
-	if (!str)
-		ft_putstr_fd("(null)", 1);
-	else if (fmt->minus)
+	if (fmt->minus)
 	{
 		ft_putstr_fd((char *)str, 1);
 		while (fmt->offset--)
@@ -65,9 +65,7 @@ void	ft_printf_str(t_fmt *fmt)
 	{
 		while (fmt->offset--)
 			ft_putchar_fd(' ', 1);
-		tmp = ft_substr(str, 0, fmt->precision);
-		ft_putstr_fd(tmp, 1);
-		free(tmp);
+		write(1, str, fmt->precision);
 	}
 }
 
@@ -130,7 +128,7 @@ void	ft_printf_uint(char c, int base, t_fmt *fmt)
 	const int			len = ft_unumlen(num, base);
 
 	if (c == 'X')
-		fmt->upper = true;
+		fmt->upper = 1;
 	if (fmt->hashtag && num > 0)
 		fmt->len += 2;
 	if (fmt->precision > len)

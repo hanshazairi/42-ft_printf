@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 15:09:33 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/05 01:44:53 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/05 14:03:03 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
-# include <stdbool.h>
 
 typedef struct s_fmt
 {
@@ -23,15 +22,14 @@ typedef struct s_fmt
 	int		pad;
 	int		width;
 	int		precision;
-	bool	hashtag;
-	bool	zero;
-	bool	minus;
-	bool	space;
-	bool	plus;
-	bool	dot;
-	bool	upper;
+	int		hashtag;
+	int		zero;
+	int		minus;
+	int		space;
+	int		plus;
+	int		dot;
+	int		upper;
 	va_list	args;
-	va_list	argscopy;
 }	t_fmt;
 
 int	ft_printf(const char *str, ...);

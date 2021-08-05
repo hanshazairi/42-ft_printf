@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:57:57 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/05 01:44:31 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/05 13:52:16 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,21 @@ static void	ft_subprocess(char c, t_fmt *fmt)
 		else
 		{
 			if (!fmt->width && c == '0')
-				fmt->zero = true;
+				fmt->zero = 1;
 			else
 				fmt->width = fmt->width * 10 + c - '0';
 		}
 	}
 	else if (c == '#')
-		fmt->hashtag = true;
+		fmt->hashtag = 1;
 	else if (c == '-')
-		fmt->minus = true;
+		fmt->minus = 1;
 	else if (c == ' ')
-		fmt->space = true;
+		fmt->space = 1;
 	else if (c == '+')
-		fmt->plus = true;
+		fmt->plus = 1;
 	else if (c == '.')
-		fmt->dot = true;
+		fmt->dot = 1;
 }
 
 char	*ft_process(char *str, t_fmt *fmt)
@@ -63,11 +63,7 @@ char	*ft_process(char *str, t_fmt *fmt)
 	if (*str == 'c')
 		ft_printf_char(fmt);
 	else if (*str == 's')
-	{
-		if (!va_arg(fmt->argscopy, char *))
-			fmt->len += 6;
 		ft_printf_str(fmt);
-	}
 	else if (*str == 'p')
 		ft_printf_ptr(fmt);
 	else if (*str == 'd' || *str == 'i')

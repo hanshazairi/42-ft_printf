@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/01 21:45:27 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/03 02:08:05 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/05 14:16:10 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 static void	ft_reset(t_fmt *fmt)
 {
-	fmt->hashtag = false;
-	fmt->space = false;
-	fmt->plus = false;
+	fmt->hashtag = 0;
+	fmt->space = 0;
+	fmt->plus = 0;
 }
 
 unsigned int	ft_abs(int n)
