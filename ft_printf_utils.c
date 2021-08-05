@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:50:31 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/05 14:30:29 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/08/05 14:57:46 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_printf_int(t_fmt *fmt)
 {
 	const int	num = va_arg(fmt->args, int);
 	const int	len = ft_numlen(num, 10);
-	const int	alen = ft_numlen(ft_abs(num), 10);
+	const int	alen = ft_unumlen(ft_abs(num), 10);
 
 	if (fmt->precision > alen)
 		fmt->pad = fmt->precision - alen;
