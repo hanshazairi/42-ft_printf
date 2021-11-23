@@ -6,20 +6,14 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 00:50:31 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/05 14:57:46 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/11/24 02:01:17 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include <stdarg.h>
-#include <unistd.h>
-#include "libft/libft.h"
 #include "ft_printf.h"
-
-unsigned int	ft_abs(int n);
-int				ft_unumlen(unsigned long long n, int base);
-void			ft_putunbr_base_fd(unsigned long long n, int base, int fd);
-void			ft_putfnbr_base_fd(long long n, int base, t_fmt *fmt, int fd);
+#include "libft/libft.h"
 
 void	ft_printf_char(t_fmt *fmt)
 {
@@ -65,14 +59,14 @@ void	ft_printf_str(t_fmt *fmt)
 	{
 		while (fmt->offset--)
 			ft_putchar_fd(' ', 1);
-		write(1, str, fmt->precision);
+		ft_putnstr_fd((char *)str, fmt->precision, 1);
 	}
 }
 
 void	ft_printf_ptr(t_fmt *fmt)
 {
-	const long long	num = va_arg(fmt->args, long long) + ULONG_MAX + 1;
-	const int		len = ft_unumlen(num, 16) + 2;
+	const long long	n = va_arg(fmt->args, long long) + ULONG_MAX + 1;
+	const int		len = ft_unumlen(n, 16) + 2;
 
 	if (fmt->width > len)
 		fmt->offset = fmt->width - len;
@@ -80,7 +74,7 @@ void	ft_printf_ptr(t_fmt *fmt)
 	if (fmt->minus)
 	{
 		ft_putstr_fd("0x", 1);
-		ft_putunbr_base_fd(num, 16, 1);
+		ft_putunbr_base_fd(n, 16, 1);
 		while (fmt->offset--)
 			ft_putchar_fd(' ', 1);
 	}
@@ -89,28 +83,28 @@ void	ft_printf_ptr(t_fmt *fmt)
 		while (fmt->offset--)
 			ft_putchar_fd(' ', 1);
 		ft_putstr_fd("0x", 1);
-		ft_putunbr_base_fd(num, 16, 1);
+		ft_putunbr_base_fd(n, 16, 1);
 	}
 }
 
 void	ft_printf_int(t_fmt *fmt)
 {
-	const int	num = va_arg(fmt->args, int);
-	const int	len = ft_numlen(num, 10);
-	const int	alen = ft_unumlen(ft_abs(num), 10);
+	const int	n = va_arg(fmt->args, int);
+	const int	len = ft_numlen(n, 10);
+	const int	alen = ft_unumlen(ft_abs(n), 10);
 
 	if (fmt->precision > alen)
 		fmt->pad = fmt->precision - alen;
-	if (fmt->zero && num < 0 && fmt->pad)
+	if (fmt->zero && n < 0 && fmt->pad)
 		--fmt->pad;
 	if (fmt->width > fmt->pad + len)
 		fmt->offset = fmt->width - fmt->pad - len;
-	if ((fmt->space || fmt->plus) && num >= 0 && ++fmt->len && fmt->offset)
+	if ((fmt->space || fmt->plus) && n >= 0 && ++fmt->len && fmt->offset)
 		--fmt->offset;
 	fmt->len += fmt->offset + fmt->pad + len;
 	if (fmt->minus)
 	{
-		ft_putfnbr_base_fd(num, 10, fmt, 1);
+		ft_putfnbr_base_fd(n, 10, fmt, 1);
 		while (fmt->offset--)
 			ft_putchar_fd(' ', 1);
 	}
@@ -118,18 +112,18 @@ void	ft_printf_int(t_fmt *fmt)
 	{
 		while (fmt->offset--)
 			ft_putchar_fd(' ', 1);
-		ft_putfnbr_base_fd(num, 10, fmt, 1);
+		ft_putfnbr_base_fd(n, 10, fmt, 1);
 	}
 }
 
 void	ft_printf_uint(char c, int base, t_fmt *fmt)
 {
-	const unsigned int	num = va_arg(fmt->args, unsigned int);
-	const int			len = ft_unumlen(num, base);
+	const unsigned int	n = va_arg(fmt->args, unsigned int);
+	const int			len = ft_unumlen(n, base);
 
 	if (c == 'X')
 		fmt->upper = 1;
-	if (fmt->hashtag && num > 0)
+	if (fmt->hashtag && n > 0)
 		fmt->len += 2;
 	if (fmt->precision > len)
 		fmt->pad = fmt->precision - len;
@@ -138,7 +132,7 @@ void	ft_printf_uint(char c, int base, t_fmt *fmt)
 	fmt->len += fmt->offset + fmt->pad + len;
 	if (fmt->minus)
 	{
-		ft_putfnbr_base_fd(num, base, fmt, 1);
+		ft_putfnbr_base_fd(n, base, fmt, 1);
 		while (fmt->offset--)
 			ft_putchar_fd(' ', 1);
 	}
@@ -146,6 +140,6 @@ void	ft_printf_uint(char c, int base, t_fmt *fmt)
 	{
 		while (fmt->offset--)
 			ft_putchar_fd(' ', 1);
-		ft_putfnbr_base_fd(num, base, fmt, 1);
+		ft_putfnbr_base_fd(n, base, fmt, 1);
 	}
 }

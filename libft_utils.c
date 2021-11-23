@@ -6,25 +6,24 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/01 21:45:27 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/08/05 14:16:10 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/11/24 01:55:45 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include <unistd.h>
 #include "ft_printf.h"
+#include "libft/libft.h"
 
-static void	ft_reset(t_fmt *fmt)
+static void	reset(t_fmt *fmt)
 {
 	fmt->hashtag = 0;
 	fmt->space = 0;
 	fmt->plus = 0;
 }
 
-unsigned int	ft_abs(int n)
+void	ft_putnstr_fd(char *s, int len, int fd)
 {
-	if (n < 0)
-		return (-n);
-	return (n);
+	write(fd, s, len);
 }
 
 int	ft_unumlen(unsigned long long n, int base)
@@ -66,7 +65,7 @@ void	ft_putfnbr_base_fd(long long n, int base, t_fmt *fmt, int fd)
 		digits = "0123456789ABCDEF";
 	while (fmt->pad-- > 0)
 		ft_putchar_fd('0', fd);
-	ft_reset(fmt);
+	reset(fmt);
 	if (n / base)
 		ft_putfnbr_base_fd(n / base * sign, base, fmt, fd);
 	ft_putchar_fd(digits[n % base * sign], fd);
